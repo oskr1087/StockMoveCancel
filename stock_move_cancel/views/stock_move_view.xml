@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+        <record id="view_move_inherit_picking_cancel_form" model="ir.ui.view">
+            <field name="name">view.move.inherit.picking.cancel.form</field>
+            <field name="model">stock.move</field>
+            <field name="inherit_id" ref="stock.view_move_form"/>
+            <field name="arch" type="xml">
+                <field name="state" position="before">
+                    <button name="action_cancel_draft" states="cancel" string="Borrador" type="object" />
+                </field>
+            </field>
+        </record>
+
+
+        <act_window
+	            id="action_cancel_move"
+	            name="Borrar/Anular Movimiento"
+	            src_model="stock.move"
+	            res_model="stock.move.cancel"
+	            view_type="form"
+	            view_mode="form"
+	            key2="client_action_multi" target="new"
+                    groups="base.group_move_cancel"
+        	/>
+
+
+       <!--Wizard For stock move-->
+        <record id="view_order_merge_form_new_1" model="ir.ui.view">
+            <field name="model">stock.move.cancel</field>
+            <field name="arch" type="xml">
+                <form string="Opciones">
+                    <sheet>
+                        <group>
+                            <group string="Borrar Stock Move">
+                            <field name="delete_move"/>
+                            </group>
+                            <group string="Anular Stock Move">
+                                <field name="cancel_move"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button name="remove_move" type="object" string="Eliminar Mov." class="oe_highlight"
+                                attrs="{'invisible': [('cancel_move', '=', True)]}"/>
+                        <button name="action_cancel" type="object" string="Anular Mov." class="oe_highlight"
+                                attrs="{'invisible': [('delete_move', '=', True)]}"/>
+                        <button string="Cancelar" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+</odoo>
